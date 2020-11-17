@@ -18,6 +18,7 @@ void second_chance(int reference_string[], int pageReferencesLength, int number_
 
   vector<int> frame;
   int referenceBit[number_of_frame];
+  // Initialize the value of referecne bit of each frame to 0 as default
 	for (int i = 0; i < number_of_frame; i++) {
 		referenceBit[i] = 0;
   }
@@ -42,6 +43,9 @@ void second_chance(int reference_string[], int pageReferencesLength, int number_
     }
     // If the page is not in the frame
     if (dup == false) {
+      // Check if the capacity of 'frame' is full
+      // If no, then put the page into 'frame'
+      // Set the reference bit at the index of 'frame' to 1
 			if ((int) frame.size() < number_of_frame) {
 				frame.push_back(reference_string[index]);
 				for (size_t c = 0; c < frame.size(); c++) {
@@ -56,6 +60,11 @@ void second_chance(int reference_string[], int pageReferencesLength, int number_
       	}
       	cout << endl;
 			} else {
+        // If yes, then apply Second Chance Algorithm
+
+        // Check the reference bit at each index of 'frame'
+        // If it is 1, then set it to 0 and move to the next frame
+        // If it is 0, then assign the new page into that index
 				while (referenceBit[victim_frame] == 1) {
 					referenceBit[victim_frame] = 0;
 					victim_frame++;

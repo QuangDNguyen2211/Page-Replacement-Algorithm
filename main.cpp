@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
     srand(time(0));
 
     // Initialize the length of 'pageReferences' array
-    const int length = 20;
+    const int length = 10;
     // Intialize 'pageReferences' array with the size of 'length'
-    int pageReferences[length] = {2,5,8,1,2,2,6,9,1,2,8,2,6,1,2,1,6,9,5,1};
+    int pageReferences[length] = {2,3,4,2,1,3,7,5,4,3};
     // Store 'pageFrames' as the number of page frames from command-line argument
     int pageFrames = atoi(argv[1]);
 
@@ -41,9 +41,9 @@ int main(int argc, char *argv[]) {
     }
     cout << endl;
     // Do Second Chance Algorithm for Page Replacement
-    second_chance(pageReferences, length, pageFrames);
+    //second_chance(pageReferences, length, pageFrames);
     // Do Least Frequently Use Algorithm for Page Replacement
-    //LFU(pageReferences, length, pageFrames);
+    LFU(pageReferences, length, pageFrames);
     // Do OPT Algorithm for Page Replacement
     //optimalPageAlgorithm(pageReferences, length, pageFrames);
   }

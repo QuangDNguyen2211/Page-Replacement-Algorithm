@@ -26,17 +26,22 @@ the user wants.
 The program will first randomly generate 100 pages which range from 0 to 9 for the page-reference string
 then print it out to the terminal.
 
-After that, the function change_victim_frame() in "SecondChance.h" and victimeFrame() in "LFU.h" is created. 
+After that, the function and victimeFrame() in "LFU.h" is created. 
 The main reason for this function is to stop the repetitive code whenever the program need to change 
 the victim frame for its algorithm, which happends a lot.
  * The first algorithm is Second-Chance algorithm:
    . The function will pass the page-reference string, the length of the page-reference string and the number of frame as arguments
    . The function will go through a for loop until it reaches the length of the page-reference string
    . The function will go through the page-reference string one by one to look if the page is already in the frame or not
-   . If the page is already in the frame, the counter for that frame will turn to 1, and it can't be bigger than 1. All other frame will be deducted by 1, if it is bigger than 0.
-   . If the page is not in the frame, then that page will be added to the frame, and all the frame counter will be deducted by 1. However, if the counter at the victim frame is 1,
-     the victim frame move on to the next one, and that counter get deducted by 1.
-   . The victim frame start at frame 0, and will increase after every loop. However, if it equals to the number of frame, it go back to 0.
+   . If the page is already in the frame, the reference bit for that frame will turn to 1.
+   . If the page is not in the frame and the page frames are not full, then that page will be added to
+     the frame, and the reference bit for that frame will be 1.
+   . If the page is not in the frame but the page frames are full, then check the reference bit at each index
+     of the frame.
+     If the bit is 1, then set it to 0 and move to the next frame.
+     If the bit is 0, then assign the new page into that index of the frame and set the bit to 1.
+   . The victim frame starts at frame 0, and will increase after every loop. However, if it is greater or equal to the number of frame,
+     it go back to 0.
 
  * The second algorithm is Least Frequently Use (LFU):
    . The function will pass the page-reference string, the length of the page-reference string and the number of frame as arguments
@@ -50,9 +55,10 @@ the victim frame for its algorithm, which happends a lot.
    . The function will pass the page-reference string, the length of the page-reference string and the number of frame as arguments
    . The function will go through a for loop until it reaches the length of the page-reference string
    . The function will go through the page-reference string one by one to look if the page is already in the frame or not
-   . If the page is not in the frame, put that page into the frame
-   . If the page is already in the frame, find the appropriate index of the frame,
+   . If the page is not in the frame and the page frames are not full, put that page into the frame.
+     If the page is not in the frame but the page frames are full, then find the appropriate index of the frame,
      and assign the new page into the frame at that index containing the page that will not be used for the longest period of time.
+   . If the page is already in the frame, then move to the next page in the page-reference string.
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -28,10 +28,11 @@ void LFU(int reference_string[], int pageReferencesLength, int number_of_frame) 
   cout << "\nLeast Frequently Used (LFU) Algorithm\n";
 
   int frame[number_of_frame];
-  for (int i = 0; i < number_of_frame; i++) {
+  int counter[number_of_frame];
+	for (int i = 0; i < number_of_frame; i++) {
     frame[i] = -1;
+		counter[i] = 0;
   }
-  int counter[number_of_frame] = {};
 
   int victim_frame = 0;
   int page_fault_counter = 0;
@@ -39,7 +40,7 @@ void LFU(int reference_string[], int pageReferencesLength, int number_of_frame) 
   bool first_fill = false;
   bool dup = false;
 
-  // Min is used find out the frame that is used the least
+  // Min is used to find out the frame that is used the least
   int min;
 
   for (int index = 0; index < pageReferencesLength; index++) {
