@@ -7,9 +7,10 @@
 */
 
 #include <iostream>
+#include <vector>
 
 using std::cout;
-using std::end;
+//using std::end;
 
 // The function is used to change the position of the victime frame
 void victimFrame(int& victim_frame, int number_of_frame, bool &first_fill) {
@@ -40,32 +41,51 @@ void LFU(int reference_string[], int pageReferencesLength, int number_of_frame) 
   bool first_fill = false;
   bool dup = false;
 
-  // Min is used to find out the frame that is used the least
-  int min;
+  // Vector order is used to remembe the order that the page get into the frame
+  vector<int> order;
+  // least_frequent is used to find out the frame that is used the least
+  int least_frequent;
 
   for (int index = 0; index < pageReferencesLength; index++) {
-	  // Initialized min with the counter at the victim frame
-		min = counter[victim_frame];
+	  // Initialized least_frequent with the counter at the victim frame
+		least_frequent = counter[victim_frame];
 		for (int c = 0; c < number_of_frame; c++) {
-			// If min is bigger than the counter of a frame, change the victime frame to that frame
-			if (min > counter[c] && first_fill == true) {
-				victim_frame = c;
+			// If least_frequent is bigger than the counter of a frame, change the least_frequent to that counter
+			if (least_frequent > counter[c] && first_fill == true) {
+				least_frequent = counter[c];
       }
 			// If the page is already in the frame, increment the counter at that frame by 1
 			if (reference_string[index] == frame[c]) {
 				counter[c] = counter[c] + 1;
 				dup = true;
 
-				if (c == victim_frame) {
-					victimFrame(victim_frame, number_of_frame, first_fill);
-        }
 				break;
 			}
 		}
 
 		if (dup == false) {
-			// Making the replacement and set the counter for that frame back to 0
-			frame[victim_frame] = reference_string[index];
+			// This is for when the frame still empty.
+			// The program will move to the next available spot until it reaches the end of the frame
+			if (first_fill == false) {
+					frame[victim_frame] = reference_string[index];
+					counter[victim_frame] = 1;
+					order.push_back(victim_frame);
+					victimFrame(victim_frame, number_of_frame, first_fill);
+				}
+			// The program will look for the least frequently	use page by comparing it to least_frequent
+				else	{
+					for (int c = 0; c < order.size(); c++) {
+						// The program will check to see which page is the oldest, and is used the least to replace
+						if (counter[order[c]] == least_frequent) {
+							victim_frame = order[c];
+							frame[victim_frame] = reference_string[index];
+							counter[victim_frame] = 1;
+							order.erase(order.begin() + c);
+							order.push_back(victim_frame);
+							break;
+						}
+					}
+				}
       // Print out what is in the frame after each pass
       for (int c = 0; c < number_of_frame; c++) {
         if (frame[c] == -1) {
@@ -74,11 +94,8 @@ void LFU(int reference_string[], int pageReferencesLength, int number_of_frame) 
         cout << frame[c] << " ";
       }
       cout << endl;
-			counter[victim_frame] = 0;
 
-			// Change the position of the victim frame
-      			// Move to the next page, and increment the number of page fault by 1.
-			victimFrame(victim_frame, number_of_frame, first_fill);
+			// Increment the number of page fault by 1.
 			++page_fault_counter;
 		}
 		// Set dup back to false if the page is already in the frame
