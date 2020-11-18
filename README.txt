@@ -43,13 +43,13 @@ the victim frame for its algorithm, which happends a lot.
    . The victim frame starts at frame 0, and will increase after every loop. However, if it is greater or equal to the number of frame,
      it go back to 0.
 
- * The second algorithm is Least Frequently Use (LFU):
+  * The second algorithm is Least Frequently Use (LFU):
    . The function will pass the page-reference string, the length of the page-reference string and the number of frame as arguments
    . The function will go through a for loop until it reaches the length of the page-reference string
    . The function will go through the page-reference string one by one to look if the page is already in the frame or not
+   . There will be a vector order to remember the order of which the page get assigned to the frame.
    . If the page is already in the frame, the counter for that frame increases by 1.
-   . If the page is not in the frame, the frame with the lowest counter get replaced.
-   . The victim frame start at frame 0, and will increase after every loop. However, if it equals to the number of frame, it go back to 0.
+   . If the page is not in the frame, the oldest page with the lowest counter get replaced.
 
  * The third algorithm is Optimal Page-replacement (OPT):
    . The function will pass the page-reference string, the length of the page-reference string and the number of frame as arguments
